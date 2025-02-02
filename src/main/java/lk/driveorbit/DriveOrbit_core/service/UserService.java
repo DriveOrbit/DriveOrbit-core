@@ -14,13 +14,13 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class DriverService implements UserDetailsService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public DriverService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
@@ -30,18 +30,18 @@ public class DriverService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-    public Optional<Driver> findByCompanyID(String companyID) {
-        return Optional.ofNullable(userRepository.findByCompanyID(companyID));
+    public Optional<Driver> findByUserID(String userID) {
+        return Optional.ofNullable(userRepository.findByUserID(userID));
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Driver user = userRepository.findByUsername(username);
+    public UserDetails loadUserByUsername(String userID) throws UsernameNotFoundException {
+        Driver user = userRepository.findByUserID(userID);
         if (user == null) {
             throw new UsernameNotFoundException("Driver not found");
         }
         return org.springframework.security.core.userdetails.User
-                .withUsername(user.getUsername())
+                .withUsername(user.getUserID())
                 .password(user.getPassword())
                 .authorities("USER")
                 .build();

@@ -2,16 +2,14 @@ package lk.driveorbit.DriveOrbit_core.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-@Component
 public class JwtTokenProvider {
 
     private static String secretKey = "pC6O3QyK95otTbR9vR7bYh1d5pNkF5R6YHvEkC2wgbI=";
 
-    public String generateToken(String username, String role) {
+    public static String generateToken(String username, String role) {
         return Jwts.builder()
                 .setSubject(username)
                 .claim("role", role)

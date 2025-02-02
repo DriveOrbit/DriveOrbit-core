@@ -1,11 +1,9 @@
 package lk.driveorbit.DriveOrbit_core.controller;
 
-import lk.driveorbit.DriveOrbit_core.Service.DriverService;
 import lk.driveorbit.DriveOrbit_core.dto.AuthResponse;
-import lk.driveorbit.DriveOrbit_core.dto.LoginRequest;
 import lk.driveorbit.DriveOrbit_core.model.Driver;
 import lk.driveorbit.DriveOrbit_core.security.JwtTokenProvider;
-
+import lk.driveorbit.DriveOrbit_core.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+;
 
 import java.util.Optional;
 
@@ -21,44 +20,44 @@ import java.util.Optional;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final DriverService driverService;
+    private final UserService userService;
     private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public AuthController(DriverService driverService, AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
-        this.driverService = driverService;
+    public AuthController(UserService userService, AuthenticationManager authenticationManager) {
+        this.userService = userService;
         this.authenticationManager = authenticationManager;
-        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Driver> registerDriver(@RequestBody Driver driver) {
-        if (driverService.findByCompanyId(driver.getCompanyID()).isPresent()) {
+    public ResponseEntity<Driver> registerUser(@RequestBody Driver user) {
+        if (userService.findByUserID(user.getUserID()).isPresent()) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(driverService.saveDriver(driver));
+        return ResponseEntity.ok(userService.saveUser(user));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginDriver(@RequestBody LoginRequest loginRequest) {
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            loginRequest.getCompanyId(),
-                            loginRequest.getPassword()
-                    )
-            );
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            Optional<Driver> driver = driverService.findByCompanyId(loginRequest.getCompanyId());
-            if (driver.isPresent()) {
-                String token = jwtTokenProvider.generateToken(driver.get().getCompanyID(), driver.get().getRole());
-                return ResponseEntity.ok(new AuthResponse(token, driver.get().getRole()));
-            } else {
-                return ResponseEntity.status(401).body("Invalid credentials1");
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(401).body("Invalid credentials2");
+    public ResponseEntity<?> loginUser(@RequestBody Driver loginUser) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginUser.getUserID(), loginUser.getPassword())
+        );
+
+        // if authentication is successful, set the authentication in the security context
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // get the authenticated user
+        String currentUsername = authentication.getName();
+        Optional<Driver> user = userService.findByUserID(currentUsername);
+
+        if (user.isPresent()) {
+            // create a response with the token and role
+            String role = user.get().getRole();
+            String token = JwtTokenProvider.generateToken(currentUsername, role);
+
+            return ResponseEntity.ok(new AuthResponse(token, role));
         }
+
+        return ResponseEntity.badRequest().build();
     }
 }

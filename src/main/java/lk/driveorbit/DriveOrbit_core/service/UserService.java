@@ -1,6 +1,5 @@
 package lk.driveorbit.DriveOrbit_core.service;
 
-
 import lk.driveorbit.DriveOrbit_core.model.Driver;
 import lk.driveorbit.DriveOrbit_core.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

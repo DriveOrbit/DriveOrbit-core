@@ -8,6 +8,7 @@ public class DriveOrbitCoreApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DriveOrbitCoreApplication.class, args);
+		System.out.println("DriveOrbit Vehicle Registration Backend is Running...");
 	}
 
 }

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Vehicle WebSocket Client</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stomp-websocket@2.3.4-next/lib/stomp.min.js"></script>
+</head>
+
+<body>
+    <h1>Vehicle WebSocket Test</h1>
+    <div id="connection-status">Disconnected</div>
+    <button id="connect-btn">Connect</button>
+    <button id="get-vehicles-btn" disabled>Get Vehicles</button>
+    <hr>
+    <div id="vehicle-list"></div>
+
+    <script>
+        let stompClient = null;
+        const connectBtn = document.getElementById('connect-btn');
+        const getVehiclesBtn = document.getElementById('get-vehicles-btn');
+        const statusDiv = document.getElementById('connection-status');
+
+        connectBtn.addEventListener('click', function () {
+            if (stompClient && stompClient.connected) {
+                disconnect();
+            } else {
+                connect();
+            }
+        });
+
+        getVehiclesBtn.addEventListener('click', function () {
+            if (stompClient && stompClient.connected) {
+                stompClient.send("/app/vehicles.get.all", {}, {});
+                console.log("Requesting all vehicles...");
+            }
+        });
+
+        function connect() {
+            statusDiv.textContent = "Connecting...";
+            // Use a full URL for development, adjust for production
+            const socket = new SockJS('http://localhost:8080/websocket-endpoint');
+            stompClient = Stomp.over(socket);
+
+            stompClient.connect({},
+                function (frame) {
+                    console.log('Connected: ' + frame);
+                    statusDiv.textContent = "Connected!";
+                    connectBtn.textContent = "Disconnect";
+                    getVehiclesBtn.disabled = false;
+
+                    // Subscribe to vehicle updates
+                    stompClient.subscribe('/topic/vehicles', function (response) {
+                        console.log("Received response:", response.body);
+                        try {
+                            const vehicles = JSON.parse(response.body);
+                            updateVehicleList(vehicles);
+                        } catch (e) {
+                            console.error("Failed to parse response:", e);
+                        }
+                    });
+                },
+                function (error) {
+                    console.error('Error connecting:', error);
+                    statusDiv.textContent = "Connection Error: " + error;
+                    connectBtn.textContent = "Connect";
+                    getVehiclesBtn.disabled = true;
+                }
+            );
+        }
+
+        function disconnect() {
+            if (stompClient) {
+                stompClient.disconnect();
+                stompClient = null;
+                statusDiv.textContent = "Disconnected";
+                connectBtn.textContent = "Connect";
+                getVehiclesBtn.disabled = true;
+            }
+        }
+
+        function updateVehicleList(vehicles) {
+            const vehicleList = document.getElementById('vehicle-list');
+            vehicleList.innerHTML = '<h2>Vehicles:</h2>';
+
+            if (Array.isArray(vehicles)) {
+                vehicles.forEach(vehicle => {
+                    const div = document.createElement('div');
+                    div.innerHTML = `
+                        <h3>${vehicle.vehicleModel || 'Unknown Model'}</h3>
+                        <p>Number: ${vehicle.vehicleNumber || 'N/A'}</p>
+                        <p>Type: ${vehicle.vehicleType || 'N/A'}</p>
+                        <p>Status: ${vehicle.vehicleStatus || 'N/A'}</p>
+                    `;
+                    vehicleList.appendChild(div);
+                });
+            } else {
+                // Handle single vehicle object
+                const div = document.createElement('div');
+                div.innerHTML = `
+                    <h3>${vehicles.vehicleModel || 'Unknown Model'}</h3>
+                    <p>Number: ${vehicles.vehicleNumber || 'N/A'}</p>
+                    <p>Type: ${vehicles.vehicleType || 'N/A'}</p>
+                    <p>Status: ${vehicles.vehicleStatus || 'N/A'}</p>
+                `;
+                vehicleList.appendChild(div);
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -42,4 +42,19 @@ public class VehicleService {
         message.getVehicle().setVehicleId(id);
         messagingTemplate.convertAndSend("/topic/vehicles", message);
     }
+
+    public Vehicle updateVehicleStatus(Integer vehicleId, String status) {
+        Optional<Vehicle> vehicleOpt = vehicleRepository.findById(vehicleId);
+        if (vehicleOpt.isPresent()) {
+            Vehicle vehicle = vehicleOpt.get();
+            vehicle.setVehicleStatus(status);
+            Vehicle updatedVehicle = vehicleRepository.save(vehicle);
+            // Broadcast status update to all subscribers
+            VehicleMessage message = new VehicleMessage("STATUS_UPDATE", updatedVehicle);
+            messagingTemplate.convertAndSend("/topic/vehicles", message);
+            return updatedVehicle;
+        } else {
+            throw new RuntimeException("Vehicle not found with id: " + vehicleId);
+        }
+    }
 }

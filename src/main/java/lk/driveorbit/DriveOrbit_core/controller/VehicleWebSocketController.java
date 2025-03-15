@@ -41,4 +41,10 @@ public class VehicleWebSocketController {
     public Vehicle updateVehicle(Vehicle vehicle) {
         return vehicleService.saveVehicle(vehicle);
     }
+
+    @MessageMapping("/vehicles.status.update")
+    @SendTo("/topic/vehicles")
+    public Vehicle updateVehicleStatus(VehicleMessage vehicleMessage) {
+        return vehicleService.updateVehicleStatus(vehicleMessage.getVehicle().getVehicleId(), vehicleMessage.getVehicle().getVehicleStatus());
+    }
 }

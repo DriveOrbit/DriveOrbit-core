@@ -1,5 +1,10 @@
 package lk.driveorbit.DriveOrbit_core.service;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import lk.driveorbit.DriveOrbit_core.entity.Vehicle;
 import lk.driveorbit.DriveOrbit_core.model.VehicleMessage;
 import lk.driveorbit.DriveOrbit_core.repository.VehicleRepository;
@@ -9,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 @Service
 public class VehicleService {
@@ -19,12 +26,54 @@ public class VehicleService {
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
-    public Vehicle saveVehicle(Vehicle vehicle) {
-        Vehicle savedVehicle = vehicleRepository.save(vehicle);
-        // Broadcast to all subscribers
-        VehicleMessage message = new VehicleMessage("UPDATE", savedVehicle);
-        messagingTemplate.convertAndSend("/topic/vehicles", message);
-        return savedVehicle;
+//    public Vehicle registerVehicle(Vehicle vehicle) throws WriterException, IOException {
+//        // Generate QR code
+//        String qrCodeText = "VehicleID:" + vehicle.getRegistrationNumber(); // Customize this text
+//        byte[] qrCode = generateQRCodeImage(qrCodeText, 200, 200);
+//
+//        // Set QR code to the vehicle entity
+//        vehicle.setQrCode(qrCode);
+//
+//        // Save the vehicle to the database
+//        return vehicleRepository.save(vehicle);
+//    }
+//
+//    private byte[] generateQRCodeImage(String text, int width, int height) throws WriterException, IOException {
+//        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+//        BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
+//
+//        ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
+//        MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream);
+//        return pngOutputStream.toByteArray();
+//    }
+
+//    public Vehicle saveVehicle(Vehicle vehicle) {
+//        Vehicle savedVehicle = vehicleRepository.save(vehicle);
+//        // Broadcast to all subscribers
+//        VehicleMessage message = new VehicleMessage("UPDATE", savedVehicle);
+//        messagingTemplate.convertAndSend("/topic/vehicles", message);
+//        return savedVehicle;
+//    }
+
+    public Vehicle saveVehicle(Vehicle vehicle) throws WriterException, IOException {
+        // Generate QR code
+        String qrCodeText = "VehicleID:" + vehicle.getRegistrationNumber(); // Customize this text
+        byte[] qrCode = generateQRCodeImage(qrCodeText, 200, 200);
+
+        // Set QR code to the vehicle entity
+        vehicle.setQrCode(qrCode);
+
+        // Save the vehicle to the database
+        return vehicleRepository.save(vehicle);
+    }
+
+    private byte[] generateQRCodeImage(String text, int width, int height) throws WriterException, IOException {
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
+
+        ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
+        MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream);
+        return pngOutputStream.toByteArray();
     }
 
     public Optional<Vehicle> getVehicleById(Integer id) {

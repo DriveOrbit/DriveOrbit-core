@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Vehicle QR Code Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stomp-websocket@2.3.4-next/lib/stomp.min.js"></script>
+</head>
+
+<body>
+    <h1>Vehicle QR Code Test</h1>
+    <div id="connection-status">Disconnected</div>
+    <button id="connect-btn">Connect</button>
+    <hr>
+    <h2>Add New Vehicle</h2>
+    <label for="vehicle-number">Vehicle Number:</label>
+    <input type="text" id="vehicle-number" placeholder="Enter vehicle number">
+    <label for="vehicle-type">Vehicle Type:</label>
+    <input type="text" id="vehicle-type" placeholder="Enter vehicle type">
+    <label for="vehicle-model">Vehicle Model:</label>
+    <input type="text" id="vehicle-model" placeholder="Enter vehicle model">
+    <label for="registration-number">Registration Number:</label>
+    <input type="text" id="registration-number" placeholder="Enter registration number">
+    <button id="add-vehicle-btn" disabled>Add Vehicle</button>
+    <hr>
+    <div id="vehicle-list"></div>
+
+    <script>
+        let stompClient = null;
+        const connectBtn = document.getElementById('connect-btn');
+        const addVehicleBtn = document.getElementById('add-vehicle-btn');
+        const statusDiv = document.getElementById('connection-status');
+
+        connectBtn.addEventListener('click', function () {
+            if (stompClient && stompClient.connected) {
+                disconnect();
+            } else {
+                connect();
+            }
+        });
+
+        addVehicleBtn.addEventListener('click', function () {
+            const vehicleNumber = document.getElementById('vehicle-number').value;
+            const vehicleType = document.getElementById('vehicle-type').value;
+            const vehicleModel = document.getElementById('vehicle-model').value;
+            const registrationNumber = document.getElementById('registration-number').value;
+
+            if (stompClient && stompClient.connected && vehicleNumber && vehicleType && vehicleModel && registrationNumber) {
+                const vehicle = {
+                    vehicleNumber: vehicleNumber,
+                    vehicleType: vehicleType,
+                    vehicleModel: vehicleModel,
+                    registrationNumber: registrationNumber
+                };
+                stompClient.send("/app/vehicles.add", {}, JSON.stringify(vehicle));
+                console.log("Adding new vehicle...");
+            }
+        });
+
+        function connect() {
+            statusDiv.textContent = "Connecting...";
+            const socket = new SockJS('http://localhost:8080/websocket-endpoint');
+            stompClient = Stomp.over(socket);
+
+            stompClient.connect({}, function (frame) {
+                console.log('Connected: ' + frame);
+                statusDiv.textContent = "Connected!";
+                connectBtn.textContent = "Disconnect";
+                addVehicleBtn.disabled = false;
+
+                stompClient.subscribe('/topic/vehicles', function (response) {
+                    console.log("Received response:", response.body);
+                    try {
+                        const vehicle = JSON.parse(response.body);
+                        updateVehicleList(vehicle);
+                    } catch (e) {
+                        console.error("Failed to parse response:", e);
+                    }
+                });
+            }, function (error) {
+                console.error('Error connecting:', error);
+                statusDiv.textContent = "Connection Error: " + error;
+                connectBtn.textContent = "Connect";
+                addVehicleBtn.disabled = true;
+            });
+        }
+
+        function disconnect() {
+            if (stompClient) {
+                stompClient.disconnect();
+                stompClient = null;
+                statusDiv.textContent = "Disconnected";
+                connectBtn.textContent = "Connect";
+                addVehicleBtn.disabled = true;
+            }
+        }
+
+        function updateVehicleList(vehicle) {
+            const vehicleList = document.getElementById('vehicle-list');
+            const div = document.createElement('div');
+            const qrCodeBase64 = btoa(String.fromCharCode(...new Uint8Array(vehicle.qrCode)));
+            div.innerHTML = `
+                <h3>${vehicle.vehicleModel || 'Unknown Model'}</h3>
+                <p>Number: ${vehicle.vehicleNumber || 'N/A'}</p>
+                <p>Type: ${vehicle.vehicleType || 'N/A'}</p>
+                <p>Status: ${vehicle.vehicleStatus || 'N/A'}</p>
+                <img src="data:image/png;base64,${qrCodeBase64}" alt="QR Code">
+            `;
+            vehicleList.appendChild(div);
+        }
+    </script>
+</body>
+
+</html>

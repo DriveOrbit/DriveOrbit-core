@@ -3,6 +3,7 @@ package lk.driveorbit.DriveOrbit_core.controller;
 import lk.driveorbit.DriveOrbit_core.entity.Vehicle;
 import lk.driveorbit.DriveOrbit_core.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,9 +17,23 @@ public class VehicleController {
     @Autowired
     private VehicleService vehicleService;
 
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+
+//    @PostMapping
+//    public Vehicle registerVehicle(@RequestBody Vehicle vehicle) throws Exception {
+//        return vehicleService.registerVehicle(vehicle);
+//    }
+
     @PostMapping
-    public Vehicle saveVehicle(@RequestBody Vehicle vehicle) {
-        return vehicleService.saveVehicle(vehicle);
+    public Vehicle saveVehicle(@RequestBody Vehicle vehicle) throws Exception {
+        // Save the vehicle and generate QR code
+        Vehicle savedVehicle = vehicleService.saveVehicle(vehicle);
+
+        // Send WebSocket message with vehicle details and QR code
+        messagingTemplate.convertAndSend("/topic/vehicles", savedVehicle);
+
+        return savedVehicle;
     }
 
     @GetMapping("/{id}")

@@ -1,7 +1,7 @@
-package lk.driveorbit.DriveOrbit_core.controller;
+package lk.driveorbit.DriveOrbit_core.vehicle.controller;
 
-import lk.driveorbit.DriveOrbit_core.entity.TripHistory;
-import lk.driveorbit.DriveOrbit_core.service.TripHistoryService;
+import lk.driveorbit.DriveOrbit_core.vehicle.entity.TripHistory;
+import lk.driveorbit.DriveOrbit_core.vehicle.service.TripHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

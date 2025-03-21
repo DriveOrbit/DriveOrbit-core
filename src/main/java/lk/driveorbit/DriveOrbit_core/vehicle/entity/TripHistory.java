@@ -1,9 +1,9 @@
-package lk.driveorbit.DriveOrbit_core.entity;
+package lk.driveorbit.DriveOrbit_core.vehicle.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.Data;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.time.LocalDate;
 
 @Entity
@@ -19,4 +19,13 @@ public class TripHistory {
     private String startLocation;
     private String endLocation;
     private String vehicleType;
+    
+    // Explicit getter and setter for historyId
+    public String getHistoryId() {
+        return historyId;
+    }
+    
+    public void setHistoryId(String historyId) {
+        this.historyId = historyId;
+    }
 }

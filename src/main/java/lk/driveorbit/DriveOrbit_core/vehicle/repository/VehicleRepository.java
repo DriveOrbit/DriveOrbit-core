@@ -1,6 +1,6 @@
-package lk.driveorbit.DriveOrbit_core.repository;
+package lk.driveorbit.DriveOrbit_core.vehicle.repository;
 
-import lk.driveorbit.DriveOrbit_core.entity.Vehicle;
+import lk.driveorbit.DriveOrbit_core.vehicle.entity.Vehicle;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

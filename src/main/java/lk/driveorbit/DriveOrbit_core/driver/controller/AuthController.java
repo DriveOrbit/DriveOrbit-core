@@ -1,4 +1,4 @@
-package lk.driveorbit.DriveOrbit_core.controller;
+package lk.driveorbit.DriveOrbit_core.driver.controller;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;

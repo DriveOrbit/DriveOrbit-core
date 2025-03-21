@@ -1,6 +1,6 @@
-package lk.driveorbit.DriveOrbit_core.repository;
+package lk.driveorbit.DriveOrbit_core.driver.repository;
 
-import lk.driveorbit.DriveOrbit_core.model.Driver;
+import lk.driveorbit.DriveOrbit_core.driver.model.Driver;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

@@ -1,11 +1,11 @@
-package lk.driveorbit.DriveOrbit_core.controller;
+package lk.driveorbit.DriveOrbit_core.driver.controller;
 
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserRecord;
-import lk.driveorbit.DriveOrbit_core.model.Driver;
-import lk.driveorbit.DriveOrbit_core.model.FirestoreDriver;
-import lk.driveorbit.DriveOrbit_core.repository.DriverRepository;
+import lk.driveorbit.DriveOrbit_core.driver.model.Driver;
+import lk.driveorbit.DriveOrbit_core.driver.model.FirestoreDriver;
+import lk.driveorbit.DriveOrbit_core.driver.repository.DriverRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;

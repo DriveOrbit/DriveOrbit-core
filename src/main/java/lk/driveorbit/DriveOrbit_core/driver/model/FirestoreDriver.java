@@ -1,4 +1,4 @@
-package lk.driveorbit.DriveOrbit_core.model;
+package lk.driveorbit.DriveOrbit_core.driver.model;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

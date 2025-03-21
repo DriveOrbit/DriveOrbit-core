@@ -1,6 +1,6 @@
 package lk.driveorbit.DriveOrbit_core.config;
 
-import lk.driveorbit.DriveOrbit_core.security.FirebaseAuthenticationFilter;
+import lk.driveorbit.DriveOrbit_core.driver.security.FirebaseAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

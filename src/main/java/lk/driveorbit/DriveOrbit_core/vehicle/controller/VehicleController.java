@@ -7,8 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/vehicles")
@@ -55,6 +54,24 @@ public class VehicleController {
             Vehicle updatedVehicle = vehicleService.updateVehicleStatus(id, status);
             return ResponseEntity.ok(updatedVehicle);
         } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/{id}/qrcode")
+    public ResponseEntity<Map<String, String>> getVehicleQRCode(@PathVariable Integer id) {
+        Optional<Vehicle> vehicleOpt = vehicleService.getVehicleById(id);
+        if (vehicleOpt.isPresent()) {
+            Vehicle vehicle = vehicleOpt.get();
+            if (vehicle.getQrCodeURL() != null) {
+                Map<String, String> response = new HashMap<>();
+                response.put("qrCode", vehicle.getQrCodeURL());
+                return ResponseEntity.ok(response);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(Collections.singletonMap("error", "QR code not found for this vehicle"));
+            }
+        } else {
             return ResponseEntity.notFound().build();
         }
     }

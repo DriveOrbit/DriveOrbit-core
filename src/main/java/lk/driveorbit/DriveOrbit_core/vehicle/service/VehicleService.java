@@ -25,6 +25,9 @@ public class VehicleService {
     @Autowired(required = false)
     private Firestore firestore;
     
+    @Autowired
+    private QRCodeService qrCodeService;
+    
     @PostConstruct
     public void init() {
         if (firestore != null) {
@@ -35,8 +38,26 @@ public class VehicleService {
     }
 
     public Vehicle saveVehicle(Vehicle vehicle) {
-        // Save to PostgreSQL
+        // First save to get the vehicle ID
         Vehicle savedVehicle = vehicleRepository.save(vehicle);
+        
+        // Generate QR code with vehicle info (base URL + vehicle ID)
+        String qrCodeData = "vehicle:" + savedVehicle.getVehicleId();
+        
+        // For better user experience, include more data to display when scanned
+        qrCodeData += "|number:" + savedVehicle.getVehicleNumber() + 
+                      "|model:" + savedVehicle.getVehicleModel() + 
+                      "|type:" + savedVehicle.getVehicleType();
+                      
+        // Generate QR code as Base64 image
+        String qrCodeBase64 = qrCodeService.generateQRCodeBase64(
+                qrCodeData, 250, 250);
+        
+        // Set the QR code URL in the vehicle
+        savedVehicle.setQrCodeURL(qrCodeBase64);
+        
+        // Save the updated vehicle with QR code
+        savedVehicle = vehicleRepository.save(savedVehicle);
         logger.info("Vehicle saved to PostgreSQL with ID: {}", savedVehicle.getVehicleId());
         
         // Save to Firebase if configured

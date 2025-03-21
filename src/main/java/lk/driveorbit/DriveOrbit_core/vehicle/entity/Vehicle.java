@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Column;
+import javax.persistence.Lob;
 
 @Entity
 @Data
@@ -30,6 +32,11 @@ public class Vehicle {
     private String gearSystem;
     private Boolean hasSpareTools;
     private Boolean hasEmergencyKit;
+    
+    // QR code URL field - modified to handle large content
+    @Lob
+    @Column(columnDefinition = "TEXT")
+    private String qrCodeURL;
 
     //getters
 
@@ -93,6 +100,11 @@ public class Vehicle {
     public Boolean getHasEmergencyKit() {
         return hasEmergencyKit;
     }
+    
+    // Getter for QR code URL
+    public String getQrCodeURL() {
+        return qrCodeURL;
+    }
 
     // Existing setters
     public void setVehicleId(Integer vehicleId) {
@@ -154,5 +166,10 @@ public class Vehicle {
     
     public void setHasEmergencyKit(Boolean hasEmergencyKit) {
         this.hasEmergencyKit = hasEmergencyKit;
+    }
+    
+    // Setter for QR code URL
+    public void setQrCodeURL(String qrCodeURL) {
+        this.qrCodeURL = qrCodeURL;
     }
 }

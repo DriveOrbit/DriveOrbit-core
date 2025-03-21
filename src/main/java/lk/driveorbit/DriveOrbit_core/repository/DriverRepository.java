@@ -11,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 public interface DriverRepository extends JpaRepository<Driver, Long> {
     Driver findByEmail(String email);
     
+    // Add method to find driver by NIC number
+    Driver findByNicNumber(String nicNumber);
+    
     @Modifying
     @Transactional
     @Query("DELETE FROM Driver d WHERE d.email = ?1")

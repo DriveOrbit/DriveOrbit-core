@@ -16,10 +16,15 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // QR code directory
         Path qrcodesUploadDir = Paths.get(uploadDir);
         String qrcodesUploadPath = qrcodesUploadDir.toFile().getAbsolutePath();
 
         registry.addResourceHandler("/qrcodes/**")
                 .addResourceLocations("file:" + qrcodesUploadPath + "/");
+        
+        // Static resources
+        registry.addResourceHandler("/**")
+                .addResourceLocations("classpath:/static/");
     }
 }

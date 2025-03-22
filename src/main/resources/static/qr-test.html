@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DriveOrbit QR Code Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .form-section {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .result-section {
+            flex: 1;
+            min-width: 300px;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .qr-code-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .qr-code-container img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        .response {
+            margin-top: 20px;
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>DriveOrbit QR Code Generator Test</h1>
+
+    <div class="container">
+        <div class="form-section">
+            <h2>Create a New Vehicle</h2>
+            <form id="vehicleForm">
+                <div class="form-group">
+                    <label for="vehicleNumber">Vehicle Number:</label>
+                    <input type="text" id="vehicleNumber" name="vehicleNumber" required>
+                </div>
+                <div class="form-group">
+                    <label for="vehicleType">Vehicle Type:</label>
+                    <select id="vehicleType" name="vehicleType" required>
+                        <option value="Car">Car</option>
+                        <option value="SUV">SUV</option>
+                        <option value="Hatchback">Hatchback</option>
+                        <option value="Van">Van</option>
+                        <option value="Truck">Truck</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="vehicleModel">Vehicle Model:</label>
+                    <input type="text" id="vehicleModel" name="vehicleModel" required>
+                </div>
+                <div class="form-group">
+                    <label for="vehicleStatus">Status:</label>
+                    <select id="vehicleStatus" name="vehicleStatus" required>
+                        <option value="Available">Available</option>
+                        <option value="Booked">In Use</option>
+                        <option value="Not Available">Maintenance</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="vehicleImage">Vehicle Image URL:</label>
+                    <input type="url" id="vehicleImage" name="vehicleImage" placeholder="https://example.com/image.jpg">
+                    <small style="display: block; margin-top: 5px; color: #666;">Enter a URL to an image of the
+                        vehicle</small>
+                </div>
+                <div class="form-group">
+                    <label for="plateNumber">Plate Number:</label>
+                    <input type="text" id="plateNumber" name="plateNumber">
+                </div>
+                <div class="form-group">
+                    <label for="condition">Condition:</label>
+                    <select id="condition" name="condition">
+                        <option value="Excellent">Excellent</option>
+                        <option value="Good">Good</option>
+                        <option value="Fair">Fair</option>
+                        <option value="Poor">Poor</option>
+                    </select>
+                </div>
+
+                <button type="submit">Create Vehicle & Generate QR Code</button>
+            </form>
+        </div>
+
+        <div class="result-section">
+            <h2>QR Code Result</h2>
+            <div id="qrCodeContainer" class="qr-code-container">
+                <p>QR code will appear here after creating a vehicle</p>
+            </div>
+
+            <h3>API Response</h3>
+            <div id="responseContainer" class="response">No response yet</div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('vehicleForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Get form values
+            const vehicle = {
+                vehicleNumber: document.getElementById('vehicleNumber').value,
+                vehicleType: document.getElementById('vehicleType').value,
+                vehicleModel: document.getElementById('vehicleModel').value,
+                vehicleStatus: document.getElementById('vehicleStatus').value,
+                plateNumber: document.getElementById('plateNumber').value,
+                condition: document.getElementById('condition').value,
+                vehicleImage: document.getElementById('vehicleImage').value || "https://example.com/image.jpg",
+                fuelConsumption: 10.5,
+                recommendedDistance: 500,
+                warnings: "None",
+                fuelType: "Petrol",
+                gearSystem: "Automatic",
+                hasSpareTools: true,
+                hasEmergencyKit: true
+            };
+
+            // Use absolute URL for Spring Boot backend
+            fetch('http://localhost:8080/vehicles', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(vehicle)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Display the response
+                    document.getElementById('responseContainer').textContent =
+                        JSON.stringify(data, null, 2);
+
+                    // If vehicle was created successfully and has a QR code
+                    if (data.vehicleId && data.qrCodeURL) {
+                        displayQRCode(data.qrCodeURL);
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('responseContainer').textContent =
+                        'Error: ' + error.message;
+                });
+        });
+
+        function displayQRCode(qrCodeUrl) {
+            const container = document.getElementById('qrCodeContainer');
+            container.innerHTML = ''; // Clear container
+
+            // Create and add image
+            const img = document.createElement('img');
+            img.src = qrCodeUrl;
+            img.alt = 'Vehicle QR Code';
+            container.appendChild(img);
+
+            // Add info text
+            const info = document.createElement('p');
+            info.textContent = 'Scan this QR code to access the vehicle profile';
+            container.appendChild(info);
+        }
+
+        // Function to test an existing vehicle's QR code
+        function testExistingVehicleQR(vehicleId) {
+            fetch(`http://localhost:8080/vehicles/${vehicleId}/qrcode`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.qrCode) {
+                        displayQRCode(data.qrCode);
+                        document.getElementById('responseContainer').textContent =
+                            JSON.stringify(data, null, 2);
+                    } else {
+                        document.getElementById('responseContainer').textContent =
+                            'QR Code not found for vehicle ID: ' + vehicleId;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('responseContainer').textContent =
+                        'Error: ' + error.message;
+                });
+        }
+    </script>
+</body>
+
+</html>

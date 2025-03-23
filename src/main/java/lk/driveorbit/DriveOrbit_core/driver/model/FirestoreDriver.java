@@ -23,6 +23,7 @@ public class FirestoreDriver {
     private String licenseIssueDate;
     private String licenseType;
     private String licenseExpireDate;
+    private String status;
 
     // Default constructor required for Firestore
     public FirestoreDriver() {
@@ -46,7 +47,7 @@ public class FirestoreDriver {
         firestoreDriver.setPassword(driver.getPassword());
         firestoreDriver.setNicNumber(driver.getNicNumber());
         firestoreDriver.setPhoneNumber(driver.getPhoneNumber());
-        
+
         // Convert LocalDate to String
         if (driver.getJoinDate() != null) {
             firestoreDriver.setJoinDate(driver.getJoinDate().format(formatter));
@@ -60,13 +61,14 @@ public class FirestoreDriver {
         if (driver.getLicenseExpireDate() != null) {
             firestoreDriver.setLicenseExpireDate(driver.getLicenseExpireDate().format(formatter));
         }
-        
+
         firestoreDriver.setAddress(driver.getAddress());
         firestoreDriver.setEmergencyContact(driver.getEmergencyContact());
         firestoreDriver.setEmergencyContactName(driver.getEmergencyContactName());
         firestoreDriver.setEmergencyContactRelation(driver.getEmergencyContactRelation());
         firestoreDriver.setLicenseNumber(driver.getLicenseNumber());
         firestoreDriver.setLicenseType(driver.getLicenseType());
+        firestoreDriver.setStatus(driver.getStatus());
 
         return firestoreDriver;
     }
@@ -85,7 +87,7 @@ public class FirestoreDriver {
         driver.setPassword(this.getPassword());
         driver.setNicNumber(this.getNicNumber());
         driver.setPhoneNumber(this.getPhoneNumber());
-        
+
         // Convert String to LocalDate
         if (this.getJoinDate() != null) {
             driver.setJoinDate(LocalDate.parse(this.getJoinDate(), formatter));
@@ -99,13 +101,14 @@ public class FirestoreDriver {
         if (this.getLicenseExpireDate() != null) {
             driver.setLicenseExpireDate(LocalDate.parse(this.getLicenseExpireDate(), formatter));
         }
-        
+
         driver.setAddress(this.getAddress());
         driver.setEmergencyContact(this.getEmergencyContact());
         driver.setEmergencyContactName(this.getEmergencyContactName());
         driver.setEmergencyContactRelation(this.getEmergencyContactRelation());
         driver.setLicenseNumber(this.getLicenseNumber());
         driver.setLicenseType(this.getLicenseType());
+        driver.setStatus(this.getStatus());
 
         return driver;
     }
@@ -261,5 +264,13 @@ public class FirestoreDriver {
 
     public void setLicenseExpireDate(String licenseExpireDate) {
         this.licenseExpireDate = licenseExpireDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

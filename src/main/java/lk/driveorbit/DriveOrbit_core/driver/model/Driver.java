@@ -54,7 +54,10 @@ public class Driver {
     private String licenseType;
     
     private LocalDate licenseExpireDate;
-    
+
+    @Column(nullable = false)
+    private String status = "active"; // Default to "active" status
+
     //getters
 
     public Long getId() {
@@ -133,6 +136,9 @@ public class Driver {
         return licenseExpireDate;
     }
 
+    public String getStatus() {
+        return status;
+    }
 
     //setters
 
@@ -210,5 +216,9 @@ public class Driver {
 
     public void setLicenseExpireDate(LocalDate licenseExpireDate) {
         this.licenseExpireDate = licenseExpireDate;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

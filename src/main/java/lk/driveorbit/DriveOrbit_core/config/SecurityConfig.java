@@ -35,6 +35,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/auth/login", "/api/auth/forgot-password", "/api/drivers/register").permitAll()
                 // Allow access to work assignment endpoints
                 .antMatchers("/api/work-assignments/**").permitAll()
+                // Allow access to notification endpoints
+                .antMatchers("/api/notifications/**").permitAll()
                 // Require authentication for all other endpoints
                 .anyRequest().authenticated();
                 

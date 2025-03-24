@@ -31,3 +31,22 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+##firebase##
+src/main/resources/google-services.json
+
+# Log files
+logs/
+*.log
+
+# Local configuration files
+application-local.properties
+application-dev.properties
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Gradle wrapper jar file
+!gradle/wrapper/gradle-wrapper.jar

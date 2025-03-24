@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        h2 {
+            margin-top: 30px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .form-section {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        input,
+        select,
+        button {
+            margin: 5px 0;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: inline-block;
+            width: 150px;
+        }
+
+        #response {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            white-space: pre-wrap;
+        }
+
+        .success-notification {
+            display: none;
+            background-color: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #d6e9c6;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 4px;
+            animation: fadeIn 0.5s;
+        }
+
+        .checkmark {
+            color: #3c763d;
+            font-size: 20px;
+            margin-right: 5px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Driver API Test Page</h1>
+
+    <div class="form-section">
+        <h2>Register Driver</h2>
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" name="firstName" required>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" name="lastName" required>
+            </div>
+            <div class="form-group">
+                <label for="nicNumber">NIC Number:</label>
+                <input type="text" id="nicNumber" name="nicNumber" required>
+            </div>
+            <div class="form-group"
+                style="background-color: #f0f7ff; padding: 10px; border-left: 3px solid #007bff; margin: 10px 0;">
+                <label for="phoneNumber">Phone Number:</label>
+                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="+94XXXXXXXXX" required>
+                <small style="display: block; margin-left: 150px; color: #666;">Format: +94 followed by phone
+                    number</small>
+            </div>
+            <div class="form-group">
+                <label for="companyId">Company ID:</label>
+                <input type="text" id="companyId" name="companyId">
+            </div>
+            <div class="form-group">
+                <label for="profilePicture">Profile Picture:</label>
+                <input type="text" id="profilePicture" name="profilePicture">
+            </div>
+            <div class="form-group">
+                <label for="joinDate">Join Date:</label>
+                <input type="date" id="joinDate" name="joinDate">
+            </div>
+            <div class="form-group">
+                <label for="dateOfBirth">Date of Birth:</label>
+                <input type="date" id="dateOfBirth" name="dateOfBirth">
+            </div>
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address">
+            </div>
+            <div class="form-group">
+                <label for="emergencyContact">Emergency Contact:</label>
+                <input type="text" id="emergencyContact" name="emergencyContact">
+            </div>
+            <div class="form-group">
+                <label for="emergencyContactName">Emergency Contact Name:</label>
+                <input type="text" id="emergencyContactName" name="emergencyContactName">
+            </div>
+            <div class="form-group">
+                <label for="emergencyContactRelation">Emergency Contact Relation:</label>
+                <input type="text" id="emergencyContactRelation" name="emergencyContactRelation">
+            </div>
+            <div class="form-group">
+                <label for="licenseNumber">License Number:</label>
+                <input type="text" id="licenseNumber" name="licenseNumber">
+            </div>
+            <div class="form-group">
+                <label for="licenseIssueDate">License Issue Date:</label>
+                <input type="date" id="licenseIssueDate" name="licenseIssueDate">
+            </div>
+            <div class="form-group">
+                <label for="licenseType">License Type:</label>
+                <input type="text" id="licenseType" name="licenseType">
+            </div>
+            <div class="form-group">
+                <label for="licenseExpireDate">License Expire Date:</label>
+                <input type="date" id="licenseExpireDate" name="licenseExpireDate">
+            </div>
+            <div class="form-group">
+                <label for="status">Status:</label>
+                <select id="status" name="status">
+                    <option value="active">Active</option>
+                    <option value="break">Break</option>
+                    <option value="unavailable">Unavailable</option>
+                </select>
+            </div>
+            <button type="submit">Register</button>
+        </form>
+        <div id="registerSuccess" class="success-notification">
+            <span class="checkmark">✓</span> Driver registered successfully!
+        </div>
+    </div>
+
+    <div class="form-section">
+        <h2>Get Driver</h2>
+        <form id="getDriverForm">
+            <div class="form-group">
+                <label for="getEmail">Email:</label>
+                <input type="email" id="getEmail" name="getEmail" required>
+            </div>
+            <button type="submit">Get Driver</button>
+        </form>
+    </div>
+
+    <div class="form-section">
+        <h2>Update Driver Status</h2>
+        <form id="updateStatusForm">
+            <div class="form-group">
+                <label for="updateEmail">Email:</label>
+                <input type="email" id="updateEmail" name="updateEmail" required>
+            </div>
+            <div class="form-group">
+                <label for="newStatus">Status:</label>
+                <select id="newStatus" name="newStatus">
+                    <option value="active">Active</option>
+                    <option value="break">Break</option>
+                    <option value="unavailable">Unavailable</option>
+                </select>
+            </div>
+            <button type="submit">Update Status</button>
+        </form>
+    </div>
+
+    <div class="form-section">
+        <h2>Delete Driver</h2>
+        <form id="deleteDriverForm">
+            <div class="form-group">
+                <label for="deleteEmail">Email:</label>
+                <input type="email" id="deleteEmail" name="deleteEmail" required>
+            </div>
+            <button type="submit">Delete Driver</button>
+        </form>
+    </div>
+
+    <div class="form-section">
+        <h2>Verify Token</h2>
+        <form id="verifyTokenForm">
+            <div class="form-group">
+                <label for="token">Token:</label>
+                <input type="text" id="token" name="token" required>
+            </div>
+            <button type="submit">Verify Token</button>
+        </form>
+    </div>
+
+    <div class="form-section">
+        <h2>Forgot Password</h2>
+        <form id="forgotPasswordForm">
+            <div class="form-group">
+                <label for="forgotEmail">Email:</label>
+                <input type="email" id="forgotEmail" name="forgotEmail" required>
+            </div>
+            <button type="submit">Reset Password</button>
+        </form>
+    </div>
+
+    <h2>Response</h2>
+    <div id="response">No response yet</div>
+
+    <script>
+        // Base URL for the API - change this to your Spring Boot server URL
+        const API_BASE_URL = 'http://localhost:8080';
+
+        // Register form
+        document.getElementById('registerForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const driver = {
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                nicNumber: document.getElementById('nicNumber').value,
+                phoneNumber: document.getElementById('phoneNumber').value,
+                companyId: document.getElementById('companyId').value,
+                profilePicture: document.getElementById('profilePicture').value,
+                joinDate: document.getElementById('joinDate').value,
+                dateOfBirth: document.getElementById('dateOfBirth').value,
+                address: document.getElementById('address').value,
+                emergencyContact: document.getElementById('emergencyContact').value,
+                emergencyContactName: document.getElementById('emergencyContactName').value,
+                emergencyContactRelation: document.getElementById('emergencyContactRelation').value,
+                licenseNumber: document.getElementById('licenseNumber').value,
+                licenseIssueDate: document.getElementById('licenseIssueDate').value,
+                licenseType: document.getElementById('licenseType').value,
+                licenseExpireDate: document.getElementById('licenseExpireDate').value,
+                status: document.getElementById('status').value
+            };
+
+            fetch(`${API_BASE_URL}/api/drivers/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(driver)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // Show success notification
+                        const successNotification = document.getElementById('registerSuccess');
+                        successNotification.style.display = 'block';
+
+                        // Hide notification after 5 seconds
+                        setTimeout(() => {
+                            successNotification.style.display = 'none';
+                        }, 5000);
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('response').innerText = data;
+                })
+                .catch(error => {
+                    document.getElementById('response').innerText = 'Error: ' + error;
+                });
+        });
+
+        // Get driver form
+        document.getElementById('getDriverForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = document.getElementById('getEmail').value;
+
+            fetch(`${API_BASE_URL}/api/drivers/${email}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('response').innerText = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    document.getElementById('response').innerText = 'Error: ' + error;
+                });
+        });
+
+        // Update status form
+        document.getElementById('updateStatusForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = document.getElementById('updateEmail').value;
+            const status = document.getElementById('newStatus').value;
+
+            // First fetch the driver
+            fetch(`${API_BASE_URL}/api/drivers/${email}`)
+                .then(response => response.json())
+                .then(driver => {
+                    // Update the status
+                    driver.status = status;
+
+                    // Send the updated driver
+                    return fetch(`${API_BASE_URL}/api/drivers/${email}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(driver)
+                    });
+                })
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('response').innerText = data;
+                })
+                .catch(error => {
+                    document.getElementById('response').innerText = 'Error: ' + error;
+                });
+        });
+
+        // Delete driver form
+        document.getElementById('deleteDriverForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = document.getElementById('deleteEmail').value;
+
+            fetch(`${API_BASE_URL}/api/drivers/${email}`, {
+                method: 'DELETE'
+            })
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('response').innerText = data;
+                })
+                .catch(error => {
+                    document.getElementById('response').innerText = 'Error: ' + error;
+                });
+        });
+
+        // Verify token form
+        document.getElementById('verifyTokenForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const token = document.getElementById('token').value;
+
+            fetch(`${API_BASE_URL}/api/auth/verify-token?idToken=${token}`, {
+                method: 'POST'
+            })
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('response').innerText = data;
+                })
+                .catch(error => {
+                    document.getElementById('response').innerText = 'Error: ' + error;
+                });
+        });
+
+        // Forgot password form
+        document.getElementById('forgotPasswordForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = document.getElementById('forgotEmail').value;
+
+            fetch(`${API_BASE_URL}/api/auth/forgot-password?email=${email}`, {
+                method: 'POST'
+            })
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('response').innerText = data;
+                })
+                .catch(error => {
+                    document.getElementById('response').innerText = 'Error: ' + error;
+                });
+        });
+    </script>
+</body>
+
+</html>

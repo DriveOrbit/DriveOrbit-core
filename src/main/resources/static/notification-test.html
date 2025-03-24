@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            margin-top: 30px;
+            color: #444;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .form-row {
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: inline-block;
+            width: 150px;
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 300px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+
+        textarea {
+            height: 60px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .notification-list {
+            margin-top: 20px;
+        }
+
+        .notification-item {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .notification-item.unread {
+            border-left: 4px solid #4CAF50;
+        }
+
+        .notification-item .title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .notification-item .message {
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .notification-item .meta {
+            color: #888;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .notification-item .type {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            color: white;
+            margin-right: 10px;
+        }
+
+        .notification-item .type.info {
+            background-color: #2196F3;
+        }
+
+        .notification-item .type.alert {
+            background-color: #f44336;
+        }
+
+        .notification-item .type.success {
+            background-color: #4CAF50;
+        }
+
+        .notification-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .notification-actions button {
+            margin: 0;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: #f44336;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            line-height: 20px;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Notification API Test</h1>
+
+    <div class="grid">
+        <div>
+            <h2>Create Notification</h2>
+            <div class="card">
+                <div class="form-row">
+                    <label for="userId">User ID:</label>
+                    <input type="text" id="userId" value="user123">
+                </div>
+                <div class="form-row">
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" value="New Assignment">
+                </div>
+                <div class="form-row">
+                    <label for="message">Message:</label>
+                    <textarea
+                        id="message">You have been assigned a new vehicle for tomorrow. Please check your schedule.</textarea>
+                </div>
+                <div class="form-row">
+                    <label for="type">Type:</label>
+                    <select id="type">
+                        <option value="info">Info</option>
+                        <option value="alert">Alert</option>
+                        <option value="success">Success</option>
+                    </select>
+                </div>
+                <button onclick="createNotification()">Create Notification</button>
+            </div>
+
+            <h2>Notification Actions</h2>
+            <div class="card">
+                <div class="form-row">
+                    <label for="notificationId">Notification ID:</label>
+                    <input type="text" id="notificationId" placeholder="Enter ID">
+                </div>
+                <div class="form-row">
+                    <button onclick="getNotificationById()">Get By ID</button>
+                    <button onclick="markAsRead()">Mark As Read</button>
+                    <button onclick="deleteNotification()">Delete</button>
+                </div>
+                <div class="form-row" style="margin-top: 20px;">
+                    <label for="filterUserId">User ID for operations:</label>
+                    <input type="text" id="filterUserId" value="user123">
+                </div>
+                <div class="form-row">
+                    <button onclick="getAllNotifications()">Get All</button>
+                    <button onclick="getUnreadNotifications()">Get Unread</button>
+                    <button onclick="countUnread()">Count Unread</button>
+                    <button onclick="markAllAsRead()">Mark All Read</button>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h2>Response</h2>
+            <div class="card">
+                <div id="statusMessage"></div>
+                <pre id="responseOutput"></pre>
+            </div>
+
+            <h2>Unread Count: <span id="unreadCount" class="badge">0</span></h2>
+            <div class="notification-list" id="notificationList">
+                <!-- Notifications will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = '/api/notifications';
+
+        // Helper function to show response
+        function showResponse(response, isError = false) {
+            const statusMessage = document.getElementById('statusMessage');
+            const responseOutput = document.getElementById('responseOutput');
+
+            if (isError) {
+                statusMessage.className = 'error';
+                statusMessage.textContent = 'Error: ' + response;
+                responseOutput.textContent = response;
+            } else {
+                statusMessage.className = 'success';
+                statusMessage.textContent = 'Success!';
+                responseOutput.textContent = JSON.stringify(response, null, 2);
+            }
+        }
+
+        // Create notification
+        function createNotification() {
+            const notification = {
+                userId: document.getElementById('userId').value,
+                title: document.getElementById('title').value,
+                message: document.getElementById('message').value,
+                type: document.getElementById('type').value,
+                isRead: false,
+                timestamp: new Date().toISOString()
+            };
+
+            fetch(API_BASE_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(notification)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text) });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showResponse(data);
+                    refreshNotifications();
+                })
+                .catch(error => {
+                    showResponse(error.message, true);
+                });
+        }
+
+        // Get all notifications for a user
+        function getAllNotifications() {
+            const userId = document.getElementById('filterUserId').value;
+
+            fetch(`${API_BASE_URL}?userId=${userId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text) });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showResponse(data);
+                    displayNotifications(data);
+                })
+                .catch(error => {
+                    showResponse(error.message, true);
+                });
+        }
+
+        // Get a notification by ID
+        function getNotificationById() {
+            const notificationId = document.getElementById('notificationId').value;
+
+            if (!notificationId) {
+                showResponse('Please enter a notification ID', true);
+                return;
+            }
+
+            fetch(`${API_BASE_URL}/${notificationId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text) });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showResponse(data);
+                })
+                .catch(error => {
+                    showResponse(error.message, true);
+                });
+        }
+
+        // Mark a notification as read
+        function markAsRead() {
+            const notificationId = document.getElementById('notificationId').value;
+
+            if (!notificationId) {
+                showResponse('Please enter a notification ID', true);
+                return;
+            }
+
+            fetch(`${API_BASE_URL}/${notificationId}/read`, {
+                method: 'PATCH'
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text) });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showResponse(data);
+                    refreshNotifications();
+                })
+                .catch(error => {
+                    showResponse(error.message, true);
+                });
+        }
+
+        // Delete a notification
+        function deleteNotification() {
+            const notificationId = document.getElementById('notificationId').value;
+
+            if (!notificationId) {
+                showResponse('Please enter a notification ID', true);
+                return;
+            }
+
+            fetch(`${API_BASE_URL}/${notificationId}`, {
+                method: 'DELETE'
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text) });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showResponse(data);
+                    refreshNotifications();
+                })
+                .catch(error => {
+                    showResponse(error.message, true);
+                });
+        }
+
+        // Get unread notifications
+        function getUnreadNotifications() {
+            const userId = document.getElementById('filterUserId').value;
+
+            fetch(`${API_BASE_URL}/unread?userId=${userId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text) });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showResponse(data);
+                    displayNotifications(data);
+                })
+                .catch(error => {
+                    showResponse(error.message, true);
+                });
+        }
+
+        // Count unread notifications
+        function countUnread() {
+            const userId = document.getElementById('filterUserId').value;
+
+            fetch(`${API_BASE_URL}/unread/count?userId=${userId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text) });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showResponse(data);
+                    document.getElementById('unreadCount').textContent = data.count;
+                })
+                .catch(error => {
+                    showResponse(error.message, true);
+                });
+        }
+
+        // Mark all notifications as read
+        function markAllAsRead() {
+            const userId = document.getElementById('filterUserId').value;
+
+            fetch(`${API_BASE_URL}/mark-all-read?userId=${userId}`, {
+                method: 'PATCH'
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text) });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showResponse(data);
+                    refreshNotifications();
+                })
+                .catch(error => {
+                    showResponse(error.message, true);
+                });
+        }
+
+        // Display notifications in the UI
+        function displayNotifications(notifications) {
+            const list = document.getElementById('notificationList');
+            list.innerHTML = '';
+
+            if (!notifications || notifications.length === 0) {
+                list.innerHTML = '<p>No notifications found</p>';
+                return;
+            }
+
+            notifications.forEach(notification => {
+                const item = document.createElement('div');
+                item.className = `notification-item ${notification.isRead ? '' : 'unread'}`;
+
+                const datetime = new Date(notification.timestamp).toLocaleString();
+
+                item.innerHTML = `
+                    <div class="title">${notification.title}</div>
+                    <div class="message">${notification.message}</div>
+                    <div class="meta">
+                        <span><span class="type ${notification.type}">${notification.type}</span> ${datetime}</span>
+                        <span>${notification.isRead ? 'Read' : 'Unread'}</span>
+                    </div>
+                    <div class="notification-actions">
+                        <button onclick="document.getElementById('notificationId').value = '${notification.id}'; getNotificationById();">View</button>
+                        ${notification.isRead ? '' : `<button onclick="document.getElementById('notificationId').value = '${notification.id}'; markAsRead();">Mark Read</button>`}
+                        <button onclick="document.getElementById('notificationId').value = '${notification.id}'; deleteNotification();">Delete</button>
+                    </div>
+                `;
+
+                list.appendChild(item);
+            });
+        }
+
+        // Refresh notifications and unread count
+        function refreshNotifications() {
+            getAllNotifications();
+            countUnread();
+        }
+
+        // Load notifications when the page loads
+        window.onload = function () {
+            refreshNotifications();
+        };
+    </script>
+</body>
+
+</html>

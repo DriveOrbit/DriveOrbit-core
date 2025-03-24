@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work Assignment API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            margin-top: 30px;
+            color: #444;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .form-row {
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: inline-block;
+            width: 150px;
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 300px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+
+        textarea {
+            height: 60px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .search-section {
+            margin-top: 20px;
+        }
+
+        .assignment-item {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+
+        .status-field {
+            width: 150px;
+        }
+
+        .action-buttons {
+            margin-top: 10px;
+        }
+
+        .action-buttons button {
+            margin-right: 10px;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Work Assignment API Test</h1>
+
+    <div class="grid">
+        <div>
+            <h2>Create Assignment</h2>
+            <div class="card">
+                <div class="form-row">
+                    <label for="assignId">Assign ID:</label>
+                    <input type="text" id="assignId" value="A001">
+                </div>
+                <div class="form-row">
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" value="2024-11-11">
+                </div>
+                <div class="form-row">
+                    <label for="arrivedTime">Arrived Time:</label>
+                    <input type="datetime-local" id="arrivedTime" value="2024-11-11T08:30">
+                </div>
+                <div class="form-row">
+                    <label for="distance">Distance (km):</label>
+                    <input type="number" id="distance" value="157.0">
+                </div>
+                <div class="form-row">
+                    <label for="duration">Duration (min):</label>
+                    <input type="number" id="duration" value="120">
+                </div>
+                <div class="form-row">
+                    <label for="startLocation">Start Location:</label>
+                    <input type="text" id="startLocation" value="Colombo City Center">
+                </div>
+                <div class="form-row">
+                    <label for="endLocation">End Location:</label>
+                    <input type="text" id="endLocation" value="Katunayake Airport">
+                </div>
+                <div class="form-row">
+                    <label for="status">Status:</label>
+                    <select id="status" class="status-field">
+                        <option value="pending">Pending</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="urgency">Urgency:</label>
+                    <select id="urgency">
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high" selected>High</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="customerName">Customer Name:</label>
+                    <input type="text" id="customerName" value="John Smith">
+                </div>
+                <div class="form-row">
+                    <label for="customerContact">Customer Contact:</label>
+                    <input type="text" id="customerContact" value="+94711234567">
+                </div>
+                <div class="form-row">
+                    <label for="vehicleType">Vehicle Type:</label>
+                    <select id="vehicleType">
+                        <option value="Car">Car</option>
+                        <option value="Van" selected>Van</option>
+                        <option value="Bus">Bus</option>
+                        <option value="Truck">Truck</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="estimatedFare">Estimated Fare:</label>
+                    <input type="number" id="estimatedFare" value="5500">
+                </div>
+                <div class="form-row">
+                    <label for="notes">Notes:</label>
+                    <textarea id="notes">Customer has 3 large suitcases and needs extra assistance</textarea>
+                </div>
+                <div class="form-row">
+                    <label for="driverId">Driver ID:</label>
+                    <input type="text" id="driverId" value="D001">
+                </div>
+                <div class="form-row">
+                    <label for="vehicleId">Vehicle ID:</label>
+                    <input type="text" id="vehicleId" value="V001">
+                </div>
+                <div class="form-row">
+                    <label for="isComplete">Is Complete:</label>
+                    <select id="isComplete">
+                        <option value="false" selected>No</option>
+                        <option value="true">Yes</option>
+                    </select>
+                </div>
+                <button onclick="createAssignment()">Create Assignment</button>
+            </div>
+        </div>
+
+        <div>
+            <h2>Response</h2>
+            <div class="card">
+                <div id="statusMessage"></div>
+                <pre id="responseOutput"></pre>
+            </div>
+        </div>
+    </div>
+
+    <h2>Assignment Operations</h2>
+    <div class="card">
+        <div class="form-row">
+            <label for="searchAssignId">Assignment ID:</label>
+            <input type="text" id="searchAssignId" placeholder="Enter ID to search/update/delete">
+            <button onclick="getAssignmentById()">Get Assignment</button>
+        </div>
+
+        <div class="action-buttons">
+            <button onclick="getAllAssignments()">Get All Assignments</button>
+            <button onclick="updateAssignment()">Update Assignment</button>
+            <button onclick="deleteAssignment()">Delete Assignment</button>
+        </div>
+    </div>
+
+    <h2>Update Status & Assignment</h2>
+    <div class="card">
+        <div class="form-row">
+            <label for="statusUpdateId">Assignment ID:</label>
+            <input type="text" id="statusUpdateId" placeholder="Enter assignment ID">
+        </div>
+        <div class="form-row">
+            <label for="newStatus">New Status:</label>
+            <select id="newStatus" class="status-field">
+                <option value="pending">Pending</option>
+                <option value="in-progress">In Progress</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+            </select>
+            <button onclick="updateStatus()">Update Status</button>
+        </div>
+
+        <div class="form-row">
+            <label for="completeUpdateId">Assignment ID:</label>
+            <input type="text" id="completeUpdateId" placeholder="Enter assignment ID">
+        </div>
+        <div class="form-row">
+            <label for="newIsComplete">Is Complete:</label>
+            <select id="newIsComplete">
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+            </select>
+            <button onclick="updateIsComplete()">Update Completion</button>
+        </div>
+
+        <div class="form-row">
+            <label for="driverUpdateId">Assignment ID:</label>
+            <input type="text" id="driverUpdateId" placeholder="Enter assignment ID">
+        </div>
+        <div class="form-row">
+            <label for="newDriverId">New Driver ID:</label>
+            <input type="text" id="newDriverId" placeholder="Enter driver ID">
+            <button onclick="assignDriver()">Assign Driver</button>
+        </div>
+    </div>
+
+    <h2>Filter Assignments</h2>
+    <div class="card">
+        <div class="form-row">
+            <label for="filterType">Filter By:</label>
+            <select id="filterType">
+                <option value="driver">Driver ID</option>
+                <option value="vehicle">Vehicle ID</option>
+                <option value="status">Status</option>
+                <option value="date">Date</option>
+            </select>
+        </div>
+        <div class="form-row">
+            <label for="filterValue">Value:</label>
+            <input type="text" id="filterValue" placeholder="Enter filter value">
+            <button onclick="filterAssignments()">Filter</button>
+        </div>
+    </div>
+
+    <h2>Assignments List</h2>
+    <div id="assignmentsList"></div>
+
+    <script>
+        const API_BASE_URL = '/api/work-assignments';
+
+        // Helper function to show response
+        function showResponse(response, isError = false) {
+            const statusMessage = document.getElementById('statusMessage');
+            const responseOutput = document.getElementById('responseOutput');
+
+            if (isError) {
+                statusMessage.className = 'error';
+                statusMessage.textContent = 'Error: ' + response;
+                responseOutput.textContent = response;
+            } else {
+                statusMessage.className = 'success';
+                statusMessage.textContent = 'Success!';
+                responseOutput.textContent = JSON.stringify(response, null, 2);
+            }
+        }
+
+        // Helper function to get form data
+        function getAssignmentData() {
+            return {
+                assignId: document.getElementById('assignId').value,
+                date: document.getElementById('date').value,
+                arrivedTime: document.getElementById('arrivedTime').value + ":00",
+                distance: parseFloat(document.getElementById('distance').value),
+                duration: parseInt(document.getElementById('duration').value),
+                startLocation: document.getElementById('startLocation').value,
+                endLocation: document.getElementById('endLocation').value,
+                status: document.getElementById('status').value,
+                urgency: document.getElementById('urgency').value,
+                customerName: document.getElementById('customerName').value,
+                customerContact: document.getElementById('customerContact').value,
+                vehicleType: document.getElementById('vehicleType').value,
+                estimatedFare: parseFloat(document.getElementById('estimatedFare').value),
+                notes: document.getElementById('notes').value,
+                driverId: document.getElementById('driverId').value,
+                vehicleId: document.getElementById('vehicleId').value,
+                isComplete: document.getElementById('isComplete').value === 'true'
+            };
+        }
+
+        // Create a new assignment
+        function createAssignment() {
+            const assignmentData = getAssignmentData();
+
+            fetch(API_BASE_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(assignmentData)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text) });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showResponse(data);
+                    getAllAssignments(); // Refresh the list
+                })
+                .catch(error => {
+                    showResponse(error.message, true);
+                });
+        }
+
+        // Get all assignments
+        function getAllAssignments() {
+            fetch(API_BASE_URL)
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text) });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showResponse(data);
+                    displayAssignments(data);
+                })
+                .catch(error => {
+                    showResponse(error.message, true);
+                });
+        }
+
+        // Get assignment by ID
+        function getAssignmentById() {
+            const assignId = document.getElementById('searchAssignId').value;
+            if (!assignId) {
+                showResponse('Please enter an assignment ID', true);
+                return;
+            }
+
+            fetch(`${API_BASE_URL}/${assignId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text) });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showResponse(data);
+                    // Populate form with assignment data for editing
+                    populateForm(data);
+                })
+                .catch(error => {
+                    showResponse(error.message, true);
+                });
+        }
+
+        // Update assignment
+        function updateAssignment() {
+            const assignId = document.getElementById('searchAssignId').value;
+            if (!assignId) {
+                showResponse('Please enter an assignment ID', true);
+                return;
+            }
+
+            const assignmentData = getAssignmentData();
+
+            fetch(`${API_BASE_URL}/${assignId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(assignmentData)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text) });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showResponse(data);
+                    getAllAssignments(); // Refresh the list
+                })
+                .catch(error => {
+                    showResponse(error.message, true);
+                });
+        }
+
+        // Delete assignment
+        function deleteAssignment() {
+            const assignId = document.getElementById('searchAssignId').value;
+            if (!assignId) {
+                showResponse('Please enter an assignment ID', true);
+                return;
+            }
+
+            fetch(`${API_BASE_URL}/${assignId}`, {
+                method: 'DELETE'
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text) });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showResponse(data);
+                    getAllAssignments(); // Refresh the list
+                })
+                .catch(error => {
+                    showResponse(error.message, true);
+                });
+        }
+
+        // Update assignment status
+        function updateStatus() {
+            const assignId = document.getElementById('statusUpdateId').value;
+            const newStatus = document.getElementById('newStatus').value;
+
+            if (!assignId) {
+                showResponse('Please enter an assignment ID', true);
+                return;
+            }
+
+            fetch(`${API_BASE_URL}/${assignId}/status?status=${newStatus}`, {
+                method: 'PATCH'
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text) });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showResponse(data);
+                    getAllAssignments(); // Refresh the list
+                })
+                .catch(error => {
+                    showResponse(error.message, true);
+                });
+        }
+
+        // Update is complete status
+        function updateIsComplete() {
+            const assignId = document.getElementById('completeUpdateId').value;
+            const isComplete = document.getElementById('newIsComplete').value;
+
+            if (!assignId) {
+                showResponse('Please enter an assignment ID', true);
+                return;
+            }
+
+            fetch(`${API_BASE_URL}/${assignId}/complete?isComplete=${isComplete}`, {
+                method: 'PATCH'
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text) });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showResponse(data);
+                    getAllAssignments(); // Refresh the list
+                })
+                .catch(error => {
+                    showResponse(error.message, true);
+                });
+        }
+
+        // Assign driver to assignment
+        function assignDriver() {
+            const assignId = document.getElementById('driverUpdateId').value;
+            const driverId = document.getElementById('newDriverId').value;
+
+            if (!assignId || !driverId) {
+                showResponse('Please enter both assignment ID and driver ID', true);
+                return;
+            }
+
+            fetch(`${API_BASE_URL}/${assignId}/driver?driverId=${driverId}`, {
+                method: 'PATCH'
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text) });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showResponse(data);
+                    getAllAssignments(); // Refresh the list
+                })
+                .catch(error => {
+                    showResponse(error.message, true);
+                });
+        }
+
+        // Filter assignments
+        function filterAssignments() {
+            const filterType = document.getElementById('filterType').value;
+            const filterValue = document.getElementById('filterValue').value;
+
+            if (!filterValue) {
+                showResponse('Please enter a filter value', true);
+                return;
+            }
+
+            let endpoint;
+            switch (filterType) {
+                case 'driver':
+                    endpoint = `${API_BASE_URL}/driver/${filterValue}`;
+                    break;
+                case 'vehicle':
+                    endpoint = `${API_BASE_URL}/vehicle/${filterValue}`;
+                    break;
+                case 'status':
+                    endpoint = `${API_BASE_URL}/status/${filterValue}`;
+                    break;
+                case 'date':
+                    endpoint = `${API_BASE_URL}/date/${filterValue}`;
+                    break;
+            }
+
+            fetch(endpoint)
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text) });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showResponse(data);
+                    displayAssignments(data);
+                })
+                .catch(error => {
+                    showResponse(error.message, true);
+                });
+        }
+
+        // Display assignments list
+        function displayAssignments(assignments) {
+            const assignmentsList = document.getElementById('assignmentsList');
+            assignmentsList.innerHTML = '';
+
+            if (!assignments || assignments.length === 0) {
+                assignmentsList.innerHTML = '<p>No assignments found</p>';
+                return;
+            }
+
+            assignments.forEach(assignment => {
+                const assignmentItem = document.createElement('div');
+                assignmentItem.className = 'assignment-item';
+
+                const assignmentDetails = document.createElement('div');
+                assignmentDetails.innerHTML = `
+                    <strong>ID:</strong> ${assignment.assignId} |
+                    <strong>Date:</strong> ${assignment.date} |
+                    <strong>Customer:</strong> ${assignment.customerName} |
+                    <strong>Status:</strong> ${assignment.status} |
+                    <strong>Complete:</strong> ${assignment.isComplete ? 'Yes' : 'No'} |
+                    <strong>Driver:</strong> ${assignment.driverId || 'Unassigned'}
+                `;
+
+                const actionButtons = document.createElement('div');
+                actionButtons.className = 'action-buttons';
+
+                const viewButton = document.createElement('button');
+                viewButton.textContent = 'View Details';
+                viewButton.onclick = () => {
+                    document.getElementById('searchAssignId').value = assignment.assignId;
+                    getAssignmentById();
+                };
+
+                actionButtons.appendChild(viewButton);
+                assignmentItem.appendChild(assignmentDetails);
+                assignmentItem.appendChild(actionButtons);
+                assignmentsList.appendChild(assignmentItem);
+            });
+        }
+
+        // Populate form with assignment data
+        function populateForm(assignment) {
+            document.getElementById('assignId').value = assignment.assignId;
+            document.getElementById('date').value = assignment.date;
+
+            // Format the datetime for the input
+            if (assignment.arrivedTime) {
+                const arrivedTime = new Date(assignment.arrivedTime);
+                const formattedTime = arrivedTime.toISOString().slice(0, 16);
+                document.getElementById('arrivedTime').value = formattedTime;
+            }
+
+            document.getElementById('distance').value = assignment.distance;
+            document.getElementById('duration').value = assignment.duration;
+            document.getElementById('startLocation').value = assignment.startLocation;
+            document.getElementById('endLocation').value = assignment.endLocation;
+            document.getElementById('status').value = assignment.status;
+            document.getElementById('urgency').value = assignment.urgency;
+            document.getElementById('customerName').value = assignment.customerName;
+            document.getElementById('customerContact').value = assignment.customerContact;
+            document.getElementById('vehicleType').value = assignment.vehicleType;
+            document.getElementById('estimatedFare').value = assignment.estimatedFare;
+            document.getElementById('notes').value = assignment.notes;
+            document.getElementById('driverId').value = assignment.driverId;
+            document.getElementById('vehicleId').value = assignment.vehicleId;
+            document.getElementById('isComplete').value = assignment.isComplete ? 'true' : 'false';
+
+            // Update other form fields for updating status, etc.
+            document.getElementById('statusUpdateId').value = assignment.assignId;
+            document.getElementById('completeUpdateId').value = assignment.assignId;
+            document.getElementById('driverUpdateId').value = assignment.assignId;
+        }
+
+        // Load all assignments when the page loads
+        window.onload = function () {
+            getAllAssignments();
+        };
+    </script>
+</body>
+
+</html>

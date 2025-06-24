@@ -36,6 +36,10 @@ build/
 ##firebase##
 src/main/resources/google-services.json
 
+# SECURITY: Configuration files with sensitive data
+src/main/resources/application.properties
+application.properties
+
 # Log files
 logs/
 *.log
@@ -43,6 +47,21 @@ logs/
 # Local configuration files
 application-local.properties
 application-dev.properties
+
+# QR Code uploads (may contain sensitive vehicle data)
+upload/
+qrcodes/
+
+# Environment files with secrets
+.env
+.env.local
+.env.production
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
 
 # OS specific files
 .DS_Store

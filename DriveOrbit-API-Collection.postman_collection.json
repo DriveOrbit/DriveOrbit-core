@@ -367,6 +367,131 @@
             "description": "Firebase authentication endpoints"
         },
         {
+            "name": "👑 Admin Authentication",
+            "item": [
+                {
+                    "name": "Admin Signup",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"admin@driveorbit.com\",\n  \"password\": \"SecureAdminPass123!\",\n  \"fullName\": \"System Administrator\",\n  \"role\": \"super-admin\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/admin/auth/signup",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "admin",
+                                "auth",
+                                "signup"
+                            ]
+                        },
+                        "description": "Create new admin or super-admin user. Only accepts 'admin' or 'super-admin' roles."
+                    }
+                },
+                {
+                    "name": "Admin Login Verify",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"idToken\": \"{{firebaseIdToken}}\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/admin/auth/login",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "admin",
+                                "auth",
+                                "login"
+                            ]
+                        },
+                        "description": "Verify admin login with Firebase token. Checks admin privileges."
+                    }
+                },
+                {
+                    "name": "Get Admin Profile",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{firebaseIdToken}}",
+                                "description": "Firebase ID Token with Bearer prefix"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/admin/auth/profile",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "admin",
+                                "auth",
+                                "profile"
+                            ]
+                        },
+                        "description": "Get current admin user profile information"
+                    }
+                },
+                {
+                    "name": "Update Admin Role (Super Admin Only)",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{firebaseIdToken}}",
+                                "description": "Super Admin Firebase token required"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"role\": \"admin\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/admin/auth/role/{{targetUserId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "admin",
+                                "auth",
+                                "role",
+                                "{{targetUserId}}"
+                            ]
+                        },
+                        "description": "Update admin role. Only super-admin can perform this action."
+                    }
+                }
+            ],
+            "description": "Admin and Super Admin authentication endpoints"
+        },
+        {
             "name": "📋 Work Assignments",
             "item": [
                 {
@@ -1128,6 +1253,12 @@
             "value": "user@example.com",
             "type": "string",
             "description": "User email for password reset"
+        },
+        {
+            "key": "targetUserId",
+            "value": "firebase-uid-here",
+            "type": "string",
+            "description": "Target user ID for admin operations"
         }
     ]
 }

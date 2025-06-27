@@ -33,6 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // Allow access to these endpoints without authentication
                 .antMatchers("/vehicles/**", "/trip-history/**", "/firebase-test/**").permitAll()
                 .antMatchers("/api/auth/login", "/api/auth/forgot-password", "/api/drivers/register").permitAll()
+                // Allow access to admin auth endpoints
+                .antMatchers("/api/admin/auth/signup", "/api/admin/auth/login", "/api/admin/auth/profile").permitAll()
                 // Allow access to work assignment endpoints
                 .antMatchers("/api/work-assignments/**").permitAll()
                 // Allow access to notification endpoints

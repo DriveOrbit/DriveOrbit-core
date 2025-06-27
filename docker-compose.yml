@@ -1,0 +1,94 @@
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:13-alpine
+    container_name: driveorbit-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: driveorbit
+      POSTGRES_USER: driveorbit_admin
+      POSTGRES_PASSWORD: DOB@admin123
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d
+    networks:
+      - driveorbit-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U driveorbit_admin -d driveorbit"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # DriveOrbit Application
+  app:
+    build: .
+    container_name: driveorbit-app
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      # Database Configuration
+      - DATABASE_URL=jdbc:postgresql://postgres:5432/driveorbit
+      - DATABASE_USERNAME=driveorbit_admin
+      - DATABASE_PASSWORD=DOB@admin123
+      
+      # Spring Configuration
+      - SPRING_APPLICATION_NAME=DriveOrbit-core
+      - SERVER_PORT=8080
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_SHOW_SQL=true
+      
+      # WebSocket Configuration
+      - SPRING_WEBSOCKET_MAX_TEXT_MESSAGE_SIZE=8192
+      - SPRING_WEBSOCKET_MAX_BINARY_MESSAGE_SIZE=8192
+      
+      # Logging Configuration
+      - LOGGING_LEVEL_DRIVEORBIT_CONFIG=DEBUG
+      
+      # File Upload Configuration
+      - QRCODE_UPLOAD_DIR=/app/upload/qrcodes
+      
+    volumes:
+      # Mount volume for QR code uploads
+      - qrcode_uploads:/app/upload/qrcodes
+      # Mount Firebase credentials (if needed to override)
+      - ./src/main/resources/google-services.json:/app/google-services.json:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - driveorbit-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Optional: Nginx reverse proxy (uncomment if needed)
+  # nginx:
+  #   image: nginx:alpine
+  #   container_name: driveorbit-nginx
+  #   restart: unless-stopped
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
+  #     - ./ssl:/etc/nginx/ssl:ro
+  #   depends_on:
+  #     - app
+  #   networks:
+  #     - driveorbit-network
+
+volumes:
+  postgres_data:
+    driver: local
+  qrcode_uploads:
+    driver: local
+
+networks:
+  driveorbit-network:
+    driver: bridge

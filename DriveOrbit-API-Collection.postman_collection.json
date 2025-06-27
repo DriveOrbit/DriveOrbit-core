@@ -1,0 +1,1133 @@
+{
+    "info": {
+        "_postman_id": "driveorbit-api-collection",
+        "name": "DriveOrbit API Collection",
+        "description": "Complete API collection for DriveOrbit fleet management system",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "driveorbit"
+    },
+    "item": [
+        {
+            "name": "🚙 Vehicle Management",
+            "item": [
+                {
+                    "name": "Create Vehicle (Simple)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"vehicleNumber\": \"ABC-1234\",\n  \"vehicleType\": \"Car\",\n  \"vehicleModel\": \"Toyota Camry\",\n  \"vehicleStatus\": \"active\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/vehicles",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "vehicles"
+                            ]
+                        },
+                        "description": "Create a new vehicle with minimal required fields"
+                    }
+                },
+                {
+                    "name": "Create Vehicle",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"vehicleNumber\": \"ABC-1234\",\n  \"vehicleType\": \"Car\",\n  \"vehicleModel\": \"Toyota Camry\",\n  \"vehicleImage\": \"https://example.com/image.jpg\",\n  \"vehicleStatus\": \"active\",\n  \"plateNumber\": \"ABC-1234\",\n  \"condition\": \"good\",\n  \"fuelConsumption\": 8.5,\n  \"recommendedDistance\": 500,\n  \"warnings\": \"None\",\n  \"fuelType\": \"Petrol\",\n  \"gearSystem\": \"Automatic\",\n  \"hasSpareTools\": true,\n  \"hasEmergencyKit\": true\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/vehicles",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "vehicles"
+                            ]
+                        },
+                        "description": "Create a new vehicle in the fleet"
+                    }
+                },
+                {
+                    "name": "Get All Vehicles",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/vehicles",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "vehicles"
+                            ]
+                        },
+                        "description": "Get list of all vehicles"
+                    }
+                },
+                {
+                    "name": "Get Vehicle by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/vehicles/{{vehicleId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "vehicles",
+                                "{{vehicleId}}"
+                            ]
+                        },
+                        "description": "Get specific vehicle by ID"
+                    }
+                },
+                {
+                    "name": "Update Vehicle",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"vehicleId\": 1,\n  \"vehicleNumber\": \"ABC-1234\",\n  \"vehicleType\": \"Car\",\n  \"vehicleModel\": \"Toyota Camry\",\n  \"vehicleImage\": \"https://example.com/updated-image.jpg\",\n  \"vehicleStatus\": \"maintenance\",\n  \"plateNumber\": \"ABC-1234\",\n  \"condition\": \"fair\",\n  \"fuelConsumption\": 9.0,\n  \"recommendedDistance\": 400,\n  \"warnings\": \"Check engine light\",\n  \"fuelType\": \"Petrol\",\n  \"gearSystem\": \"Automatic\",\n  \"hasSpareTools\": true,\n  \"hasEmergencyKit\": true\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/vehicles/{{vehicleId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "vehicles",
+                                "{{vehicleId}}"
+                            ]
+                        },
+                        "description": "Update vehicle information"
+                    }
+                },
+                {
+                    "name": "Delete Vehicle",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/vehicles/{{vehicleId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "vehicles",
+                                "{{vehicleId}}"
+                            ]
+                        },
+                        "description": "Delete a vehicle from the fleet"
+                    }
+                },
+                {
+                    "name": "Update Vehicle Status",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "\"active\""
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/vehicles/{{vehicleId}}/status",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "vehicles",
+                                "{{vehicleId}}",
+                                "status"
+                            ]
+                        },
+                        "description": "Update vehicle status (active, maintenance, inactive)"
+                    }
+                },
+                {
+                    "name": "Get Vehicle QR Code",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/vehicles/{{vehicleId}}/qrcode",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "vehicles",
+                                "{{vehicleId}}",
+                                "qrcode"
+                            ]
+                        },
+                        "description": "Get QR code for vehicle identification"
+                    }
+                }
+            ],
+            "description": "Vehicle fleet management endpoints"
+        },
+        {
+            "name": "👨‍💼 Driver Management",
+            "item": [
+                {
+                    "name": "Register Driver",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"securePassword123\",\n  \"phoneNumber\": \"+1234567890\",\n  \"nicNumber\": \"123456789V\",\n  \"licenseNumber\": \"DL123456\",\n  \"licenseExpiryDate\": \"2025-12-31\",\n  \"address\": \"123 Main St, City\",\n  \"dateOfBirth\": \"1985-06-15\",\n  \"status\": \"active\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/drivers/register",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "drivers",
+                                "register"
+                            ]
+                        },
+                        "description": "Register a new driver with Firebase authentication"
+                    }
+                },
+                {
+                    "name": "Get Driver by Email",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/drivers/{{driverEmail}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "drivers",
+                                "{{driverEmail}}"
+                            ]
+                        },
+                        "description": "Get driver information by email"
+                    }
+                },
+                {
+                    "name": "Update Driver",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Smith\",\n  \"email\": \"john.doe@example.com\",\n  \"phoneNumber\": \"+1234567890\",\n  \"nicNumber\": \"123456789V\",\n  \"licenseNumber\": \"DL123456\",\n  \"licenseExpiryDate\": \"2026-12-31\",\n  \"address\": \"456 New St, City\",\n  \"dateOfBirth\": \"1985-06-15\",\n  \"status\": \"active\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/drivers/{{driverEmail}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "drivers",
+                                "{{driverEmail}}"
+                            ]
+                        },
+                        "description": "Update driver information"
+                    }
+                },
+                {
+                    "name": "Delete Driver",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/drivers/{{driverEmail}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "drivers",
+                                "{{driverEmail}}"
+                            ]
+                        },
+                        "description": "Delete driver from system"
+                    }
+                }
+            ],
+            "description": "Driver management and authentication endpoints"
+        },
+        {
+            "name": "🔐 Authentication",
+            "item": [
+                {
+                    "name": "Verify Firebase Token",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                            }
+                        ],
+                        "body": {
+                            "mode": "urlencoded",
+                            "urlencoded": [
+                                {
+                                    "key": "idToken",
+                                    "value": "{{firebaseIdToken}}",
+                                    "description": "Firebase ID Token"
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/auth/verify-token",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "verify-token"
+                            ]
+                        },
+                        "description": "Verify Firebase authentication token"
+                    }
+                },
+                {
+                    "name": "Forgot Password",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                            }
+                        ],
+                        "body": {
+                            "mode": "urlencoded",
+                            "urlencoded": [
+                                {
+                                    "key": "email",
+                                    "value": "{{userEmail}}",
+                                    "description": "User email for password reset"
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/auth/forgot-password",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "forgot-password"
+                            ]
+                        },
+                        "description": "Send password reset email through Firebase"
+                    }
+                }
+            ],
+            "description": "Firebase authentication endpoints"
+        },
+        {
+            "name": "📋 Work Assignments",
+            "item": [
+                {
+                    "name": "Create Assignment",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"assignId\": \"ASSIGN001\",\n  \"driverId\": \"driver123\",\n  \"vehicleId\": \"1\",\n  \"customerId\": \"customer456\",\n  \"taskDescription\": \"Delivery to downtown office\",\n  \"assignmentDate\": \"2024-06-27\",\n  \"startTime\": \"09:00\",\n  \"endTime\": \"17:00\",\n  \"pickupLocation\": \"Warehouse District\",\n  \"dropoffLocation\": \"Downtown Office Building\",\n  \"urgencyLevel\": \"medium\",\n  \"status\": \"pending\",\n  \"isComplete\": false,\n  \"notes\": \"Handle with care - fragile items\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/work-assignments",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "work-assignments"
+                            ]
+                        },
+                        "description": "Create a new work assignment"
+                    }
+                },
+                {
+                    "name": "Get All Assignments",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/work-assignments",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "work-assignments"
+                            ]
+                        },
+                        "description": "Get all work assignments"
+                    }
+                },
+                {
+                    "name": "Get Assignment by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/work-assignments/{{assignmentId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "work-assignments",
+                                "{{assignmentId}}"
+                            ]
+                        },
+                        "description": "Get specific assignment by ID"
+                    }
+                },
+                {
+                    "name": "Update Assignment",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"assignId\": \"ASSIGN001\",\n  \"driverId\": \"driver123\",\n  \"vehicleId\": \"1\",\n  \"customerId\": \"customer456\",\n  \"taskDescription\": \"Updated: Delivery to downtown office\",\n  \"assignmentDate\": \"2024-06-27\",\n  \"startTime\": \"08:00\",\n  \"endTime\": \"16:00\",\n  \"pickupLocation\": \"Updated Warehouse District\",\n  \"dropoffLocation\": \"Downtown Office Building\",\n  \"urgencyLevel\": \"high\",\n  \"status\": \"in-progress\",\n  \"isComplete\": false,\n  \"notes\": \"Updated notes - handle with extra care\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/work-assignments/{{assignmentId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "work-assignments",
+                                "{{assignmentId}}"
+                            ]
+                        },
+                        "description": "Update assignment information"
+                    }
+                },
+                {
+                    "name": "Delete Assignment",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/work-assignments/{{assignmentId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "work-assignments",
+                                "{{assignmentId}}"
+                            ]
+                        },
+                        "description": "Delete a work assignment"
+                    }
+                },
+                {
+                    "name": "Get Assignments by Driver",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/work-assignments/driver/{{driverId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "work-assignments",
+                                "driver",
+                                "{{driverId}}"
+                            ]
+                        },
+                        "description": "Get all assignments for a specific driver"
+                    }
+                },
+                {
+                    "name": "Get Assignments by Vehicle",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/work-assignments/vehicle/{{vehicleId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "work-assignments",
+                                "vehicle",
+                                "{{vehicleId}}"
+                            ]
+                        },
+                        "description": "Get all assignments for a specific vehicle"
+                    }
+                },
+                {
+                    "name": "Get Active Assignments by Driver",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/work-assignments/driver/{{driverId}}/active",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "work-assignments",
+                                "driver",
+                                "{{driverId}}",
+                                "active"
+                            ]
+                        },
+                        "description": "Get active assignments for a specific driver"
+                    }
+                },
+                {
+                    "name": "Get Assignments by Status",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/work-assignments/status/{{status}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "work-assignments",
+                                "status",
+                                "{{status}}"
+                            ]
+                        },
+                        "description": "Get assignments by status (pending, in-progress, completed)"
+                    }
+                },
+                {
+                    "name": "Get Assignments by Date",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/work-assignments/date/{{assignmentDate}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "work-assignments",
+                                "date",
+                                "{{assignmentDate}}"
+                            ]
+                        },
+                        "description": "Get assignments for a specific date (YYYY-MM-DD format)"
+                    }
+                },
+                {
+                    "name": "Update Assignment Status",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/work-assignments/{{assignmentId}}/status?status={{newStatus}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "work-assignments",
+                                "{{assignmentId}}",
+                                "status"
+                            ],
+                            "query": [
+                                {
+                                    "key": "status",
+                                    "value": "{{newStatus}}",
+                                    "description": "New status: pending, in-progress, completed"
+                                }
+                            ]
+                        },
+                        "description": "Update assignment status"
+                    }
+                },
+                {
+                    "name": "Assign Driver to Assignment",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/work-assignments/{{assignmentId}}/driver?driverId={{driverId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "work-assignments",
+                                "{{assignmentId}}",
+                                "driver"
+                            ],
+                            "query": [
+                                {
+                                    "key": "driverId",
+                                    "value": "{{driverId}}",
+                                    "description": "Driver ID to assign"
+                                }
+                            ]
+                        },
+                        "description": "Assign a driver to an assignment"
+                    }
+                },
+                {
+                    "name": "Update Assignment Completion Status",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/work-assignments/{{assignmentId}}/complete?isComplete={{isComplete}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "work-assignments",
+                                "{{assignmentId}}",
+                                "complete"
+                            ],
+                            "query": [
+                                {
+                                    "key": "isComplete",
+                                    "value": "{{isComplete}}",
+                                    "description": "true or false"
+                                }
+                            ]
+                        },
+                        "description": "Mark assignment as complete or incomplete"
+                    }
+                }
+            ],
+            "description": "Work assignment management endpoints"
+        },
+        {
+            "name": "🔔 Notifications",
+            "item": [
+                {
+                    "name": "Create Notification",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"title\": \"New Assignment\",\n  \"message\": \"You have been assigned a new delivery task\",\n  \"userId\": \"user123\",\n  \"type\": \"assignment\",\n  \"isRead\": false,\n  \"priority\": \"medium\",\n  \"data\": {\n    \"assignmentId\": \"ASSIGN001\",\n    \"dueDate\": \"2024-06-28\"\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/notifications",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "notifications"
+                            ]
+                        },
+                        "description": "Create a new notification"
+                    }
+                },
+                {
+                    "name": "Get User Notifications",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/notifications?userId={{userId}}&limit={{limit}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "notifications"
+                            ],
+                            "query": [
+                                {
+                                    "key": "userId",
+                                    "value": "{{userId}}",
+                                    "description": "User ID to get notifications for"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "{{limit}}",
+                                    "description": "Number of notifications to return (default: 10)"
+                                }
+                            ]
+                        },
+                        "description": "Get notifications for a specific user"
+                    }
+                },
+                {
+                    "name": "Get Notification by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/notifications/{{notificationId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "notifications",
+                                "{{notificationId}}"
+                            ]
+                        },
+                        "description": "Get specific notification by ID"
+                    }
+                },
+                {
+                    "name": "Mark Notification as Read",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/notifications/{{notificationId}}/read",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "notifications",
+                                "{{notificationId}}",
+                                "read"
+                            ]
+                        },
+                        "description": "Mark a notification as read"
+                    }
+                },
+                {
+                    "name": "Delete Notification",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/notifications/{{notificationId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "notifications",
+                                "{{notificationId}}"
+                            ]
+                        },
+                        "description": "Delete a notification"
+                    }
+                },
+                {
+                    "name": "Get Unread Notifications",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/notifications/unread?userId={{userId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "notifications",
+                                "unread"
+                            ],
+                            "query": [
+                                {
+                                    "key": "userId",
+                                    "value": "{{userId}}",
+                                    "description": "User ID to get unread notifications for"
+                                }
+                            ]
+                        },
+                        "description": "Get unread notifications for a user"
+                    }
+                },
+                {
+                    "name": "Count Unread Notifications",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/notifications/unread/count?userId={{userId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "notifications",
+                                "unread",
+                                "count"
+                            ],
+                            "query": [
+                                {
+                                    "key": "userId",
+                                    "value": "{{userId}}",
+                                    "description": "User ID to count unread notifications for"
+                                }
+                            ]
+                        },
+                        "description": "Get count of unread notifications for a user"
+                    }
+                },
+                {
+                    "name": "Get Notifications by Type",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/notifications/type/{{notificationType}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "notifications",
+                                "type",
+                                "{{notificationType}}"
+                            ]
+                        },
+                        "description": "Get notifications by type (assignment, maintenance, alert, etc.)"
+                    }
+                },
+                {
+                    "name": "Mark All Notifications as Read",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/notifications/mark-all-read?userId={{userId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "notifications",
+                                "mark-all-read"
+                            ],
+                            "query": [
+                                {
+                                    "key": "userId",
+                                    "value": "{{userId}}",
+                                    "description": "User ID to mark all notifications as read"
+                                }
+                            ]
+                        },
+                        "description": "Mark all notifications as read for a user"
+                    }
+                }
+            ],
+            "description": "Notification management endpoints"
+        },
+        {
+            "name": "🚗 Trip History",
+            "item": [
+                {
+                    "name": "Create Trip History",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"id\": \"trip001\",\n  \"vehicleId\": \"1\",\n  \"driverId\": \"driver123\",\n  \"startLocation\": \"Warehouse District\",\n  \"endLocation\": \"Downtown Office\",\n  \"startTime\": \"2024-06-27T09:00:00\",\n  \"endTime\": \"2024-06-27T11:30:00\",\n  \"distance\": 25.5,\n  \"fuelConsumed\": 2.1,\n  \"purpose\": \"Delivery\",\n  \"notes\": \"Successful delivery completed\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/trip-history",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "trip-history"
+                            ]
+                        },
+                        "description": "Create a new trip history record"
+                    }
+                },
+                {
+                    "name": "Get All Trip Histories",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/trip-history",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "trip-history"
+                            ]
+                        },
+                        "description": "Get all trip history records"
+                    }
+                },
+                {
+                    "name": "Get Trip History by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/trip-history/{{tripId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "trip-history",
+                                "{{tripId}}"
+                            ]
+                        },
+                        "description": "Get specific trip history by ID"
+                    }
+                }
+            ],
+            "description": "Trip history tracking endpoints"
+        },
+        {
+            "name": "🔧 System Diagnostics",
+            "item": [
+                {
+                    "name": "Firebase Status Check",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/diagnostics/firebase-status",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "diagnostics",
+                                "firebase-status"
+                            ]
+                        },
+                        "description": "Check Firebase connectivity and configuration status"
+                    }
+                },
+                {
+                    "name": "Application Info",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/diagnostics/app-info",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "diagnostics",
+                                "app-info"
+                            ]
+                        },
+                        "description": "Get application runtime information"
+                    }
+                },
+                {
+                    "name": "Firebase Connection Test",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/firebase-test",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "firebase-test"
+                            ]
+                        },
+                        "description": "Test Firebase Firestore connection"
+                    }
+                }
+            ],
+            "description": "System diagnostics and health check endpoints"
+        }
+    ],
+    "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    ""
+                ]
+            }
+        },
+        {
+            "listen": "test",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    ""
+                ]
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost:8080",
+            "type": "string",
+            "description": "Base URL for the DriveOrbit API"
+        },
+        {
+            "key": "vehicleId",
+            "value": "1",
+            "type": "string",
+            "description": "Sample vehicle ID for testing"
+        },
+        {
+            "key": "driverId",
+            "value": "driver123",
+            "type": "string",
+            "description": "Sample driver ID for testing"
+        },
+        {
+            "key": "driverEmail",
+            "value": "john.doe@example.com",
+            "type": "string",
+            "description": "Sample driver email for testing"
+        },
+        {
+            "key": "assignmentId",
+            "value": "ASSIGN001",
+            "type": "string",
+            "description": "Sample assignment ID for testing"
+        },
+        {
+            "key": "assignmentDate",
+            "value": "2024-06-27",
+            "type": "string",
+            "description": "Sample assignment date (YYYY-MM-DD format)"
+        },
+        {
+            "key": "status",
+            "value": "pending",
+            "type": "string",
+            "description": "Sample status for filtering"
+        },
+        {
+            "key": "newStatus",
+            "value": "in-progress",
+            "type": "string",
+            "description": "New status for updates"
+        },
+        {
+            "key": "isComplete",
+            "value": "false",
+            "type": "string",
+            "description": "Completion status (true/false)"
+        },
+        {
+            "key": "userId",
+            "value": "user123",
+            "type": "string",
+            "description": "Sample user ID for notifications"
+        },
+        {
+            "key": "notificationId",
+            "value": "1",
+            "type": "string",
+            "description": "Sample notification ID"
+        },
+        {
+            "key": "notificationType",
+            "value": "assignment",
+            "type": "string",
+            "description": "Sample notification type"
+        },
+        {
+            "key": "limit",
+            "value": "10",
+            "type": "string",
+            "description": "Limit for paginated results"
+        },
+        {
+            "key": "tripId",
+            "value": "trip001",
+            "type": "string",
+            "description": "Sample trip ID for testing"
+        },
+        {
+            "key": "firebaseIdToken",
+            "value": "YOUR_FIREBASE_ID_TOKEN_HERE",
+            "type": "string",
+            "description": "Firebase ID Token for authentication"
+        },
+        {
+            "key": "userEmail",
+            "value": "user@example.com",
+            "type": "string",
+            "description": "User email for password reset"
+        }
+    ]
+}
